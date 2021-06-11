@@ -1,0 +1,105 @@
+.App {
+  text-align: center;
+  width: 730px;
+  margin: 0 auto;
+}
+
+.sudoku-header {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #1890ff;
+}
+
+.sudoku-header h1 {
+  font-size: 24px;
+  color: #fff;
+  margin: 0 !important;
+}
+
+.sudoku-box {
+  border: 3px #1890ff solid;
+  overflow: hidden;
+}
+
+.sudoku-row {
+  display: flex;
+}
+
+.sudoku-col {
+  flex: 1;
+  border-right: 1px #ccc solid;
+  border-bottom: 1px #ccc solid;
+  height: 70px;
+  line-height: 70px;
+  background-color: #efefef;
+  
+}
+
+.sudoku-number {
+  position: relative;
+  font-size:30px !important;
+  display: inline-block; 
+  width: 100%;
+}
+
+.sudoku-box .ant-input {
+  border: none;
+  height: 69px;
+  background-color: #fff;
+  text-align: center;
+  font-size: 28px;
+  line-height: 69px;
+}
+
+div.ant-select-item {
+  font-size: 20px ;
+  line-height: 26px ;
+}
+
+.sudoku-error {
+  background-color:rgb(250, 123, 123) !important;
+}
+
+.control-btn {
+  margin: 25px 20px;
+}
+
+/* 使用CSS控制高亮 Start*/
+.sudoku-row:hover .sudoku-col, .sudoku-row:hover .ant-input {
+  background-color: rgb(223, 236, 253);
+}
+
+.sudoku-col:hover .ant-input {
+  background-color: #fff;
+  z-index: 999;
+}
+
+.sudoku-col:hover .sudoku-number {
+  z-index: 999;
+}
+
+.sudoku-col:hover {
+  position: relative;
+}
+
+
+.sudoku-col-mask {
+  transition-delay: 0s;
+}
+
+.sudoku-col:hover .sudoku-col-mask {
+  display: block;
+  position: absolute;
+  z-index: 11;
+  width: 100%;
+  height: 2000px;
+  top: -700px;
+  background-color: rgb(179, 212, 255);
+  opacity: 0.5;
+}
+
+.sudoku-col-mask:hover {
+  display: none !important;
+}
+
+/* 使用CSS控制高亮 End*/
