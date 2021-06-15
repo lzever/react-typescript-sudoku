@@ -1,3 +1,5 @@
+import { sync } from "resolve";
+
 interface stateData{
 	safeLength:number,
   sudokuStartTime:number,
@@ -10,21 +12,53 @@ const state:stateData = {
   sudokuRestartCount:0
 }
 
-const numbers: Array<number> = [1,2,3,4,5,6,7,8,9];
+const NUMBERS: Array<number> = [1,2,3,4,5,6,7,8,9];
+
+let resultData:number[][] = [];
 
 const randomNumber = (numberArray:number[]) => {
-  return Math.floor((Math.random() * numberArray.length));
+  return  numberArray[Math.floor((Math.random() * numberArray.length))];
 }
 
-const SudokuInit = (resolve:any) => {
+const computeBoxIndex = (row:number,col:number) => {
+  return Math.ceil((row+1)/3) + 3 * (Math.ceil((col+1)/3) - 1);
+}
 
-  let rows:number = numbers.length;
-  let columns:number = numbers.length;
-  let resultData:number[][] = [];
+const computeSmallSudoku = (numberArray:number[], row:number, col:number) => {
+  return new Promise<number>((resolve)=>{
+    let copyArray = numberArray.slice();
+    let boxIndex = computeBoxIndex(row, col); //取出是第几个格子
+    let useNumber:number[] = [];
+
+    for(let si=0;si<resultData.length;si++){
+      for(let sj=0;sj<resultData[si].length;sj++){
+        if(computeBoxIndex(si,sj)===boxIndex){
+          useNumber.push(resultData[si][sj]);
+        }
+      }
+    }
+
+    let resultArray = copyArray.filter((el)=>{
+      return !useNumber.includes(el);
+    });
+
+    let resultNumber = randomNumber(resultArray);
+
+    resolve(resultNumber);
+  });
+}
+
+
+const SudokuInit = async (resolve:any) => {
+
+  let rows:number = NUMBERS.length;
+  let columns:number = NUMBERS.length;
+  
+  resultData = [];
 
   for(let i=0;i<rows;i++){
     
-    let copyNumbers = numbers.slice();
+    let copyNumbers = NUMBERS.slice();
     let rowNumbers:number[] = [];
 
     //开始计算
@@ -42,10 +76,15 @@ const SudokuInit = (resolve:any) => {
           
         }
       }
+
+      let chooseNumber = await computeSmallSudoku(copyNumbers, i, j);
       
-      let num = copyNumbers.splice(randomNumber(copyNumbers),1)[0];
-      if(typeof num == "number"){
+      if(typeof chooseNumber == "number"){
+
+        let num = copyNumbers.splice(copyNumbers.indexOf(chooseNumber), 1)[0];
+
         rowNumbers.push(num);
+
       }else{
         //资源分配方式有误就重新分配
         //console.log("restart"); //使用log会明显的影响计算效率
@@ -83,7 +122,7 @@ const SudokuInit = (resolve:any) => {
 }
 
 export function SudokuGetNumbers(){
-  return numbers;
+  return NUMBERS;
 }
 
 export function SudokuCore(){

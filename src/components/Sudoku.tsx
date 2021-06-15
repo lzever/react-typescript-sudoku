@@ -79,7 +79,7 @@ export default class Sudoku extends React.Component {
       this.resetSudokuList();
     }else{
       let {rowIdx,colIdx,value,oldValue} = Object.assign(this.state.userWriteNumber.pop()||{}) ;
-      if(rowIdx&&colIdx){
+      if(typeof rowIdx === "number"&&typeof rowIdx === "number"){
         this.inputOnChange(rowIdx, colIdx, oldValue)
       }
       
